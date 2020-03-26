@@ -1,0 +1,31 @@
+{
+  "name": "certificate_generator",
+  "version": "1.0.0",
+  "description": "A web based solution where e-certificate will be generated",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pawan"
+  ],
+  "author": "pawan",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "csvtojson": "^2.0.10",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "md5": "^2.2.1",
+    "mkdirp": "^0.5.1",
+    "multer": "^1.4.2",
+    "mysql": "^2.17.1",
+    "nodemailer": "^6.3.0",
+    "nodemon": "^1.19.2",
+    "pdfkit": "^0.10.0",
+    "qrcode": "^1.4.4"
+  }
+}

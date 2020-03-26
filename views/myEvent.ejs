@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>View My Events</title>
+</head>
+
+<body>
+    <div>
+        <% include navbar.ejs ;%>
+    </div>
+    <div class="container-fluid" style="margin-top: 15vh;">
+        <div class="row">
+            <div class="col-lg-5 ml-5 overflow-auto">
+                <h2>Events List</h2>
+                <% if(alert=="true") { %>
+                    <div class="alert alert-success alert-dismissible">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      <strong>Event deleted successfully.</strong>
+                    </div>
+                <% } %>
+                <% if(alert_csv=="true") { %>
+                    <div class="alert alert-success alert-dismissible">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      <strong>Csv uploded successfully.</strong>
+                    </div>
+                <% } %>
+                <% results.forEach(function(result){ %>
+                <div class="row border border-dark rounded p-3 mt-5">
+                    <img src="<%= result.event_image %>" width="150" height="150">
+                    <div class="ml-5 mt-auto">
+                        <p><strong>Event Name : </strong>
+                            <%= result.event_name %>
+                        </p>
+                        <p><strong>Event Type : </strong>
+                            <%= result.event_type %>
+                        </p>
+                        <p><strong>Event Incharge : </strong>
+                            <%= result.event_incharge %>
+                        </p>
+                    </div>
+                    <div class="ml-auto mr-5">
+                        <p><button type="button" class="btn btn-info" onclick="viewEvent('<%= result.event_image %>','<%= result.event_name %>','<%= result.event_type %>','<%= result.event_date %>','<%= result.event_incharge %>','<%= result.event_description %>')">View Event</button></p>
+                        
+                        <p><button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadcsv" onclick="upload_csv('<%= result.id %>')">Upload CSV</button></p>
+
+                        <p><button class="btn btn-danger" type="button" data-toggle="modal" data-target="#deleteEvent" onclick="delete_event('<%= result.id %>','<%= result.event_name %>')">Delete</button></p>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+            <div class="col-lg-6 ml-5 border-left border-dark overflow-auto">
+                <h4>Click View event to view them here</h4>
+                <div align="center" class="p-5">
+                    <img class="border rounded" id="eventImage" src="/images/dbit.png" width="200" height="200">
+                    <p class="mt-4">
+                        <!-- <h5>Event Name : </h5> -->
+                        <p id="eventName"><strong>Event Name : </strong> ABC event</p>
+                    </p>
+                    <p>
+                        <!-- <h5>Event Type : </h5> -->
+                        <p id="eventType"><strong>Event Type : </strong> Any Type</p>
+                    </p>
+                    <p>
+                        <!-- <h5>Event Date : </h5> -->
+                        <p id="eventDate"><strong>Event Date : </strong> At given Date</p>
+                    </p>
+                    <p>
+                        <!-- <h5>Event Incharge : </h5> -->
+                        <p id="eventIncharge"><strong>Event Incharge : </strong> Incharge Name</p>
+                    </p>
+                </div>
+                <p>
+                    <h5>Event Description : </h5>
+                    <p id="eventDescription">Description about event</p>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="container" style="margin-top: 20vh;">
+        <h2>Event Table</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Event Name</th>
+                    <th>Event Type</th>
+                    <th>Event Date</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% results.forEach(function(result){ %>
+                <tr>
+                    <td>
+                        <%= result.event_name %>
+                    </td>
+                    <td>
+                        <%= result.event_type %>
+                    </td>
+                    <td>
+                        <%= result.event_date %>
+                    </td>
+                    <td>
+                        <div>
+                            <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#deleteEvent" onclick="delete_event('<%= result.id %>','<%= result.event_name %>')">Delete</button>
+                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadcsv" onclick="upload_csv('<%= result.id %>')">Upload CSV</button>
+                            <form method="POST" action="/upload_csv" enctype="multipart/form-data">
+                <input type="hidden" name="event_id" value="<%= result.event_id %>">
+                <button class="btn btn-primary" type="submit">Upload CSV<input type="file" name="CSVFile"></button>
+              </form>
+                        </div>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div> -->
+    <div>
+        <div class="modal fade" id="uploadcsv" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Upload CSV</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form method="POST" action="/upload_csv" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <h4><strong>Select CSV file to upload</strong></h4>
+                            <input type="file" name="CSVFile">
+                            <input type="hidden" name="event_Id" id="event_Id">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Upload</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="modal fade" id="deleteEvent" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Event</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form method="POST" action="/deleteEvent">
+                        <div class="modal-body">
+                            <h4><strong>Do you want to delete <p id="event_name"></p></strong></h4>
+                            <input type="hidden" name="event_id" id="event_id">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Delete</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+function delete_event(id, name) {
+    document.getElementById("event_id").value = id;
+    document.getElementById("event_name").innerHTML = name;
+}
+
+function upload_csv(id) {
+    document.getElementById("event_Id").value = id;
+}
+
+function viewEvent(eventImage, eventName, eventType, eventDate, eventIncharge, eventDescription) {
+    document.getElementById("eventImage").src = eventImage;
+    document.getElementById("eventName").innerHTML = "<strong>Event Name : </strong>"+eventName;
+    document.getElementById("eventType").innerHTML = "<strong>Event Type : </strong>"+eventType;
+    document.getElementById("eventDate").innerHTML = "<strong>Event Date : </strong>"+eventDate;
+    document.getElementById("eventIncharge").innerHTML = "<strong>Event Incharge : </strong>"+eventIncharge;
+    document.getElementById("eventDescription").innerHTML = "<strong>Event Description : </strong>"+eventDescription;
+}
+</script>
+
+</html>

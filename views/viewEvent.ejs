@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>View Events</title>
+    <style type="text/css">
+      /*body{
+        overflow-y: scroll;
+      }*/
+    </style>
+</head>
+
+<body class="mb-5">
+    <div>
+        <% include navbar.ejs ;%>
+    </div>
+    <div class="container-fluid" style="margin-top: 15vh;">
+        <div class="row">
+            <div class="col-lg-5 ml-5 overflow-auto">
+                <h2>Events List</h2>
+                <% results.forEach(function(result){ %>
+                <div class="row border border-dark rounded p-3 mt-5">
+                    <img src="<%= result.event_image %>" width="150" height="150">
+                    <div class="ml-5 mt-auto">
+                        <p><strong>Event Name : </strong>
+                            <%= result.event_name %>
+                        </p>
+                        <p><strong>Event Type : </strong>
+                            <%= result.event_type %>
+                        </p>
+                        <p><strong>Event Incharge : </strong>
+                            <%= result.event_incharge %>
+                        </p>
+                    </div>
+                    <div class="mt-auto ml-auto mb-auto">
+                        <button type="button" class="btn btn-info mb-4" onclick="viewEvent('<%= result.event_image %>','<%= result.event_name %>','<%= result.event_type %>','<%= result.event_date %>','<%= result.event_incharge %>','<%= result.event_description %>')">View Event</button>
+                        <form action="/showParticipants" method="POST">
+                            <input type="hidden" name="event_id" value="<%= result.id %>">
+                            <input type="hidden" name="event_name" value="<%= result.event_name %>">
+                            <input type="hidden" name="csv_path" value="<%= result.csv_path %>">
+                            <input type="hidden" name="event_type" value="<%= result.event_type %>">
+                            <% if(roles == "hod") {%>
+                            <button type="submit" class="btn btn-primary">View Participants</button>
+                            <% } %>
+                        </form>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+            <div class="col-lg-6 ml-5 border-left border-dark overflow-auto">
+                <h4>Click View event to view them here</h4>
+                <div align="center" class="p-5">
+                    <img class="border rounded" id="eventImage" src="/images/dbit.png" width="200" height="200">
+                    <p class="mt-4">
+                        <!-- <h5>Event Name : </h5> -->
+                        <p id="eventName"><strong>Event Name : </strong> ABC event</p>
+                    </p>
+                    <p>
+                        <!-- <h5>Event Type : </h5> -->
+                        <p id="eventType"><strong>Event Type : </strong> Any Type</p>
+                    </p>
+                    <p>
+                        <!-- <h5>Event Date : </h5> -->
+                        <p id="eventDate"><strong>Event Date : </strong> At given Date</p>
+                    </p>
+                    <p>
+                        <!-- <h5>Event Incharge : </h5> -->
+                        <p id="eventIncharge"><strong>Event Incharge : </strong> Incharge Name</p>
+                    </p>
+                </div>
+                <p>
+                    <h5>Event Description : </h5>
+                    <p id="eventDescription">Description about event</p>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+  function viewEvent(eventImage, eventName, eventType, eventDate, eventIncharge, eventDescription){
+    document.getElementById("eventImage").src = eventImage;
+    document.getElementById("eventName").innerHTML = "<strong>Event Name : </strong>"+eventName;
+    document.getElementById("eventType").innerHTML = "<strong>Event Type : </strong>"+eventType;
+    document.getElementById("eventDate").innerHTML = "<strong>Event Date : </strong>"+eventDate;
+    document.getElementById("eventIncharge").innerHTML = "<strong>Event Incharge : </strong>"+eventIncharge;
+    document.getElementById("eventDescription").innerHTML = "<strong>Event Description : </strong>"+eventDescription;
+  }
+</script>
+
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Add Events</title>
+    <style type="text/css">
+    #btn_submit:hover {
+        background-color: #43bc4c;
+    }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <% include navbar.ejs ;%>
+    </div>
+    <div class="container-fluid" style="margin-top: 10vh;">
+        <div class="row">
+            <div class="col-lg-6 mt-3 ml-6">
+                <h2>Event Add Form</h2>
+                <% if(alert=="true") { %>
+                    <div class="alert alert-success alert-dismissible">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      <strong>Event added successfully.</strong>
+                    </div>
+                <% } %>
+                <form class="form-horizontal" action="/addEvent" method="POST" enctype='multipart/form-data'>
+                    <div class="form-group">
+                        <label class="control-label col-sm-6" for="event_name">Name of the Event:</label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" id="event_name" placeholder="Enter Name" name="event_name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="event_type">Select Type of event:</label>
+                        <div class="col-sm-12">
+                            <select class="form-control" id="event_type" name="event_type">
+                                <option value="talk">Talk</option>
+                                <option value="hackathons">Hackathons</option>
+                                <option value="competition">Competition</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-6" for="event_date">Date of Event:</label>
+                        <div class="col-sm-12">
+                            <input type="date" class="form-control" id="event_date" name="event_date">
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+        <label class="control-label col-sm-2" for="event_incharge">Event Incharge Name:</label>
+        <div class="col-sm-6">          
+          <input type="text" class="form-control" id="event_incharge" placeholder="Enter Name of Event Incharge" name="event_incharge">
+        </div>
+      </div> -->
+                    <!-- Add the photo of the event -->
+                    <div class="form-group">
+                        <label for="lawyerImage">Upload Image of event</label>
+                        <div class="col-sm-12">
+                            <input type="file" class="form-control" name="eventImage" id="eventImage">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="event_description">Event Description</label>
+                        <div class="col-sm-12">
+                            <textarea id="event_description" name="event_description" class="form-control" rows="5" cols="60" placeholder="Event description here..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-6">
+                            <button id="btn_submit" type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+            <div class="col-lg-6 mt-3" style="justify-content: center;">
+              <div id="gallery" style="margin-top: 5vh;margin-bottom: 5vh;"> </div>
+
+              <h1 id="title"></h1>
+
+              <h5><p id="eventType"></p></h5>
+              <h5><p id="eventDate"></p></h5>
+
+              <p class="mt-5" id="eventDescription"></p>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+function previewImages() {
+    var $preview = $('#gallery').empty();
+    if (this.files) {
+        $.each(this.files, readAndPreview);
+    }
+
+    function readAndPreview(i, file) {
+        if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
+            return alert(file.name + " is not an image");
+        }
+
+        var reader = new FileReader();
+
+        $(reader).on("load", function() {
+            $preview.append($("<img/>", { src: this.result, width:300, height: 200 }));
+        });
+
+        reader.readAsDataURL(file);
+    }
+
+}
+
+$('#eventImage').on("change", previewImages);
+
+// function update() {
+//   var event_name = document.getElementById('event_name');
+//   var title = document.getElementById('title');
+//   title.value = event_name;
+// }  
+
+$(document).ready(function() {
+    $("#event_name").keyup(function() {
+        // Getting the current value of textarea
+        var currentText = $(this).val();
+
+        // Setting the Div content
+        $("#title").text(currentText);
+    });
+
+    // $("#eventType").text("Event Type : "+$("#event_type").val());
+
+    // $("#eventDate").text("Event Date : "+$("#event_date").val());
+
+
+    $("#event_description").keyup(function() {
+        // Getting the current value of textarea
+        var currentText = $(this).val();
+
+        // Setting the Div content
+        $("#eventDescription").text(currentText);
+    });
+});
+</script>
+
+</html>

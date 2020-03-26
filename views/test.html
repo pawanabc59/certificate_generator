@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4" style=" width: 400px; height: 500px; border: 1px solid #000000">
+              
+              <!-- <canvas id="c1" width="500" height="600" style="border: 1px solid #000000"> -->
+                <img id="img1" src="dbit.png" draggable="true" ondragstart="drag(event);Copy();" width="336" height="69">
+                <img id="img2" src="dbit.png" width="336" height="69">
+              <!-- </canvas> -->
+            </div>
+            <!-- <div class="col-md-8" ondrop="drop(event)" ondragover="allowDrop(event);Paste()" style="width: 400px; height: 500px; border: 1px solid #000000"> -->
+                <canvas id="c" width="800" height="600" ondrop="drop(event)" ondragover="allowDrop(event)" style="border: 1px solid #000000"></canvas>
+            <!-- </div> -->
+        </div>
+    </div>
+</body>
+<script>
+function allowDrop(ev) {
+    ev.preventDefault();
+    Paste();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+    Copy();
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+    Paste();
+}
+
+var img1 = document.getElementById("img1");
+var canvas = new fabric.Canvas("c");
+var canvas2 = new fabric.Canvas("c1");
+
+function Copy() {
+  canvas2.getActiveObject().clone(function(cloned) {
+    _clipboard = cloned;
+  });
+}
+
+function Paste() {
+  // clone again, so you can do multiple copies.
+  _clipboard.clone(function(clonedObj) {
+    canvas.discardActiveObject();
+    clonedObj.set({
+      left: clonedObj.left + 10,
+      top: clonedObj.top + 10,
+      evented: true,
+    });
+    if (clonedObj.type === 'activeSelection') {
+      // active selection needs a reference to the canvas.
+      clonedObj.canvas = canvas;
+      clonedObj.forEachObject(function(obj) {
+        canvas.add(obj);
+      });
+      // this should solve the unselectability
+      clonedObj.setCoords();
+    } else {
+      canvas.add(clonedObj);
+    }
+    _clipboard.top += 10;
+    _clipboard.left += 10;
+    canvas.setActiveObject(clonedObj);
+    canvas.requestRenderAll();
+  });
+}
+
+// var destCtx = canvas.getContext('2d');
+
+var rect = new fabric.Rect({
+    left: 100,
+    top: 150,
+    fill: 'red',
+    width: 200,
+    height: 200
+});
+var iTextSample = new fabric.IText('hello\nworld', {
+    left: 50,
+    top: 50,
+    fontFamily: 'Helvetica',
+    fill: '#333',
+    lineHeight: 1.1,
+    styles: {
+        0: {
+            0: { textDecoration: 'underline', fontSize: 80 },
+            1: { textBackgroundColor: 'red' }
+        },
+        1: {
+            0: { textBackgroundColor: 'rgba(0,255,0,0.5)' },
+            4: { fontSize: 20 }
+        }
+    }
+});
+
+var imgInstance = new fabric.Image(img1,{
+    width: 200,
+    height: 200});
+
+// destCtx.drawImage(canvas2, 0, 0);
+
+// canvas2.add(rect);
+canvas.add(iTextSample);
+canvas2.add(imgInstance);
+canvas.add(rect);
+</script>
+
+</html>

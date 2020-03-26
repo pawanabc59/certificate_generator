@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>REPORT</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+
+<body>
+    <div style="display: block;">
+        <% include navbar.ejs ;%>
+    </div>
+    <div style="width: 40%; height: auto; margin-top: 15vh;" class="text-center">
+        <h4>Test</h4>
+        <% if (result) { %>
+        <h4>
+            <%= isValid %>
+        </h4>
+        <h5>
+            <%= result.email %>
+        </h5>
+        <h5>
+            <%= result.event_type %>
+        </h5>
+        <%} else { %>
+            <h4>INVALID</h4>
+        <% } %>
+    </div>
+</body>
+
+</html>
