@@ -21,7 +21,7 @@
                 <% results.forEach(function(result){ %>
                 <div class="row border border-dark rounded p-3 mt-5">
                     <img src="<%= result.event_image %>" width="150" height="150">
-                    <div class="ml-5 mt-auto">
+                    <div class="ml-3 mt-auto">
                         <p><strong>Event Name : </strong>
                             <%= result.event_name %>
                         </p>
@@ -38,6 +38,7 @@
                             <input type="hidden" name="event_id" value="<%= result.id %>">
                             <input type="hidden" name="event_name" value="<%= result.event_name %>">
                             <input type="hidden" name="csv_path" value="<%= result.csv_path %>">
+                            <input type="hidden" name="certificate_printed" value="<%= result.certificate_printed %>">
                             <input type="hidden" name="event_type" value="<%= result.event_type %>">
                             <% if(roles == "hod") {%>
                             <button type="submit" class="btn btn-primary">View Participants</button>

@@ -10,41 +10,49 @@
         <% include navbar.ejs ;%>
     </div>
     <div class="container-fluid" style="margin-top: 15vh;">
+        <% if(alert=="true") { %>
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Event deleted successfully.</strong>
+        </div>
+        <% } %>
+        <% if(alert_csv=="true") { %>
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Csv uploded successfully.</strong>
+        </div>
+        <% } %>
         <div class="row">
             <div class="col-lg-5 ml-5 overflow-auto">
                 <h2>Events List</h2>
-                <% if(alert=="true") { %>
-                    <div class="alert alert-success alert-dismissible">
-                      <button type="button" class="close" data-dismiss="alert">&times;</button>
-                      <strong>Event deleted successfully.</strong>
-                    </div>
-                <% } %>
-                <% if(alert_csv=="true") { %>
-                    <div class="alert alert-success alert-dismissible">
-                      <button type="button" class="close" data-dismiss="alert">&times;</button>
-                      <strong>Csv uploded successfully.</strong>
-                    </div>
-                <% } %>
                 <% results.forEach(function(result){ %>
-                <div class="row border border-dark rounded p-3 mt-5">
-                    <img src="<%= result.event_image %>" width="150" height="150">
-                    <div class="ml-5 mt-auto">
-                        <p><strong>Event Name : </strong>
-                            <%= result.event_name %>
-                        </p>
-                        <p><strong>Event Type : </strong>
-                            <%= result.event_type %>
-                        </p>
-                        <p><strong>Event Incharge : </strong>
-                            <%= result.event_incharge %>
-                        </p>
+                <div class="border border-dark rounded p-3 mt-5">
+                    <div>
+                        <%  if(result.csv_uploaded == 1){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Csv is uploaded</strong>
+                        </div>
+                        <% } %>
                     </div>
-                    <div class="ml-auto mr-5">
-                        <p><button type="button" class="btn btn-info" onclick="viewEvent('<%= result.event_image %>','<%= result.event_name %>','<%= result.event_type %>','<%= result.event_date %>','<%= result.event_incharge %>','<%= result.event_description %>')">View Event</button></p>
-                        
-                        <p><button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadcsv" onclick="upload_csv('<%= result.id %>')">Upload CSV</button></p>
-
-                        <p><button class="btn btn-danger" type="button" data-toggle="modal" data-target="#deleteEvent" onclick="delete_event('<%= result.id %>','<%= result.event_name %>')">Delete</button></p>
+                    <div class="row">
+                        <img src="<%= result.event_image %>" width="150" height="150">
+                        <div class="ml-3 mt-auto">
+                            <p><strong>Event Name : </strong>
+                                <%= result.event_name %>
+                            </p>
+                            <p><strong>Event Type : </strong>
+                                <%= result.event_type %>
+                            </p>
+                            <p><strong>Event Incharge : </strong>
+                                <%= result.event_incharge %>
+                            </p>
+                        </div>
+                        <div class="ml-auto mr-5">
+                            <p><button type="button" class="btn btn-info" onclick="viewEvent('<%= result.event_image %>','<%= result.event_name %>','<%= result.event_type %>','<%= result.event_date %>','<%= result.event_incharge %>','<%= result.event_description %>')">View Event</button></p>
+                            <p><button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadcsv" onclick="upload_csv('<%= result.id %>', '<%= result.csv_uploaded %>')">Upload CSV</button></p>
+                            <p><button class="btn btn-danger" type="button" data-toggle="modal" data-target="#deleteEvent" onclick="delete_event('<%= result.id %>','<%= result.event_name %>')">Delete</button></p>
+                        </div>
                     </div>
                 </div>
                 <% }) %>
@@ -169,17 +177,17 @@ function delete_event(id, name) {
     document.getElementById("event_name").innerHTML = name;
 }
 
-function upload_csv(id) {
+function upload_csv(id, csv_uploaded) {
     document.getElementById("event_Id").value = id;
 }
 
 function viewEvent(eventImage, eventName, eventType, eventDate, eventIncharge, eventDescription) {
     document.getElementById("eventImage").src = eventImage;
-    document.getElementById("eventName").innerHTML = "<strong>Event Name : </strong>"+eventName;
-    document.getElementById("eventType").innerHTML = "<strong>Event Type : </strong>"+eventType;
-    document.getElementById("eventDate").innerHTML = "<strong>Event Date : </strong>"+eventDate;
-    document.getElementById("eventIncharge").innerHTML = "<strong>Event Incharge : </strong>"+eventIncharge;
-    document.getElementById("eventDescription").innerHTML = "<strong>Event Description : </strong>"+eventDescription;
+    document.getElementById("eventName").innerHTML = "<strong>Event Name : </strong>" + eventName;
+    document.getElementById("eventType").innerHTML = "<strong>Event Type : </strong>" + eventType;
+    document.getElementById("eventDate").innerHTML = "<strong>Event Date : </strong>" + eventDate;
+    document.getElementById("eventIncharge").innerHTML = "<strong>Event Incharge : </strong>" + eventIncharge;
+    document.getElementById("eventDescription").innerHTML = "<strong>Event Description : </strong>" + eventDescription;
 }
 </script>
 

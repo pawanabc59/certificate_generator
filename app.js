@@ -243,6 +243,7 @@ app.get("/myEvent", (req, res) => {
             alert_csv = 'false';
         }else{
             alert_csv = 'true'
+            uploadCsv_alert_int==1;
         }
         res.render("myEvent", { results: results, alert:alert, alert_csv:alert_csv });
     })
@@ -266,12 +267,12 @@ app.post("/upload_csv", upload.single('CSVFile'), (req, res) => {
     // console.log("files : "+req.file);
     // console.log("file name : "+req.file.originalname);
     var csv_path = "/uploads/" + req.session.username + "/" + req.file.originalname;
-    var sql = "UPDATE `event` SET `csv_path`= '" + csv_path + "' WHERE id = '" + event_id + "'";
+    var sql = "UPDATE `event` SET `csv_path`= '" + csv_path + "' , `csv_uploaded` = '"+1+"' WHERE id = '" + event_id + "'";
     con.query(sql, function(err, results) {
         if (err) { throw err; }
         uploadCsv_alert_int = 1;
         res.redirect("/myEvent");
-    })
+    });
 });
 
 app.get("/showParticipants", (req, res) => {
@@ -283,6 +284,7 @@ app.post("/showParticipants", (req, res) => {
     var event_id = req.body.event_id;
     var event_name = req.body.event_name;
     var event_type = req.body.event_type;
+    var certificate_printed = req.body.certificate_printed;
     var csv_path = "./public" + req.body.csv_path;
 
     csv().fromFile(csv_path).then((jsonObject) => {
@@ -305,7 +307,7 @@ app.post("/showParticipants", (req, res) => {
         //     alert = 'true'
         //     printCertificates_alert_int = 0;
         // }
-        res.render("showParticipants", { jsonObject: jsonObject, event_id: event_id, event_name: event_name, csv_path: csv_path, alert:'false' });
+        res.render("showParticipants", { jsonObject: jsonObject, event_id: event_id, event_name: event_name, csv_path: csv_path, alert:'false', certificate_printed:certificate_printed });
     })
 })
 
@@ -314,6 +316,7 @@ app.post("/printCertificates", (req, res) => {
     var event_name = req.body.event_name;
     var event_id = req.body.event_id;
     var csv_path = req.body.csv_path;
+    var certificate_printed = req.body.certificate_printed;
     var selectedTemplate = req.body.selectedTemplate;
 
     console.log("file path : " + csv_path);
@@ -360,8 +363,12 @@ app.post("/printCertificates", (req, res) => {
 
         }
         // }
-        res.render("showParticipants", { jsonObject: jsonObject, event_id: event_id, event_name: event_name, csv_path: csv_path, alert:'true' });
-    })
+        var sql = "UPDATE `event` SET `certificate_printed` = '"+1+"' WHERE id = '" + event_id + "'";
+        con.query(sql, function(err, results) {
+            if (err) { throw err; }
+            res.render("showParticipants", { jsonObject: jsonObject, event_id: event_id, event_name: event_name, csv_path: csv_path, alert:'true',certificate_printed:certificate_printed });
+        });
+    });
 
 });
 

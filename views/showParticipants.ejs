@@ -10,6 +10,12 @@
         <% include navbar.ejs ;%>
     </div>
     <div class="container" style="margin-top: 20vh;">
+        <% if(certificate_printed==1) { %>
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Certificate is alerady printed.</strong>
+        </div>
+        <% } %>
         <h2>Participants Table</h2>
         <% if(alert=="true") { %>
         <div class="alert alert-success alert-dismissible">
@@ -63,6 +69,7 @@
                         <input type="hidden" name="event_name" value="<%= event_name %>">
                         <input type="hidden" name="event_id" value="<%= event_id %>">
                         <input type="hidden" name="csv_path" value="<%= csv_path %>">
+                        <input type="hidden" name="certificate_printed" value="<%= certificate_printed %>">
 
                         <div class="row">
                             <div class="radio">

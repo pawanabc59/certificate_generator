@@ -26,6 +26,7 @@
     "nodemailer": "^6.3.0",
     "nodemon": "^1.19.2",
     "pdfkit": "^0.10.0",
-    "qrcode": "^1.4.4"
+    "qrcode": "^1.4.4",
+    "randomstring": "^1.1.5"
   }
 }
