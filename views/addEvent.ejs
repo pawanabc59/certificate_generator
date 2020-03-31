@@ -7,6 +7,15 @@
     #btn_submit:hover {
         background-color: #43bc4c;
     }
+    h5, strong{
+        font-family: 'Yrsa';
+        font-size: 20px;
+        font-weight: bold;
+      }
+      label{
+        font-family: 'Montaga';
+        font-size: 16px;
+      }
     </style>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
@@ -15,21 +24,21 @@
     <div>
         <% include navbar.ejs ;%>
     </div>
-    <div class="container-fluid" style="margin-top: 10vh;">
+    <div class="container-fluid" style="margin-top: 1vh;">
         <div class="row">
             <div class="col-lg-6 mt-3 ml-6">
-                <h2>Event Add Form</h2>
+                <h2 style="font-family:'Montaga';width: 40vh; border-bottom: 1px solid #000;">Event Add Form</h2>
                 <% if(alert=="true") { %>
                     <div class="alert alert-success alert-dismissible">
                       <button type="button" class="close" data-dismiss="alert">&times;</button>
                       <strong>Event added successfully.</strong>
                     </div>
                 <% } %>
-                <form class="form-horizontal" action="/addEvent" method="POST" enctype='multipart/form-data'>
+                <form class="form-horizontal mt-4" action="/addEvent" method="POST" enctype='multipart/form-data'>
                     <div class="form-group">
                         <label class="control-label col-sm-6" for="event_name">Name of the Event:</label>
                         <div class="col-sm-12">
-                            <input type="text" class="form-control" id="event_name" placeholder="Enter Name" name="event_name">
+                            <input type="text" class="form-control" id="event_name" placeholder="Enter Name of the Event" name="event_name">
                         </div>
                     </div>
                     <div class="form-group">

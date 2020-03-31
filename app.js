@@ -61,6 +61,7 @@ var upload = multer({ storage: storage })
 app.use(function(req, res, next) {
     res.locals.username = req.session.username;
     res.locals.roles = req.session.roles;
+    res.locals.department = req.session.department;
     res.locals.status = "400";
     next();
 });
@@ -94,8 +95,9 @@ app.post("/login", (req, res) => {
 
             req.session.username = username;
             req.session.roles = result.roles;
-            console.log("result : " + result[0])
-            console.log("role : " + result.roles)
+            req.session.department = result.department;
+            console.log("result : " + result[0]);
+            console.log("role : " + result.roles);
             res.redirect("/viewEvent");
 
         });
@@ -129,7 +131,7 @@ app.post("/addFaculty", (req, res) => {
     var sql = "INSERT INTO `faculty`(`name`, `username`, `password`, `department`, `role`) VALUES ('" + name + "','" + username + "','" + password + "','" + department + "','" + role + "') ";
     con.query(sql, function(err, results) {
         if (err) { throw err; }
-        var sql = "INSERT INTO `login`( `username`, `password`, `roles`) VALUES ('" + username + "','" + password + "','" + role + "')";
+        var sql = "INSERT INTO `login`( `username`, `password`, `roles`, `department`) VALUES ('" + username + "','" + password + "','" + role + "' , '" + department +"')";
         con.query(sql, function(err, result) {
             if (err) { throw err; }
             addFaculty_alert_int = 1;
@@ -193,7 +195,7 @@ app.post("/addEvent", upload.array('eventImage', 1), (req, res) => {
     console.log("image " + eventPicture);
 
 
-    var sql = "INSERT INTO `event`(`event_name`, `event_type`,`event_date`, `event_incharge`,`incharge_username`,`event_image`, `event_description`) VALUES ('" + event_name + "','" + event_type + "','" + event_date + "','" + req.session.username + "','" + req.session.username + "','" + eventPicture + "','" + event_description + "')";
+    var sql = "INSERT INTO `event`(`event_name`, `event_type`,`event_date`, `event_incharge`,`incharge_username`,`department`,`event_image`, `event_description`) VALUES ('" + event_name + "','" + event_type + "','" + event_date + "','" + req.session.username + "','" + req.session.username + "','"+ req.session.department +"','" + eventPicture + "','" + event_description + "')";
     con.query(sql, function(err, results) {
         if (err) { throw err; }
         addEvent_alert_int = 1;
@@ -418,8 +420,6 @@ app.get('/logout', function(req, res) {
 
 });
 
-+
-
 app.get('/report', (req, res) => {
     var sql = "select event_type,count(id) as count from event group by event_type";
     con.query(sql, function(err, results) {
@@ -434,8 +434,110 @@ app.get('/report', (req, res) => {
 
         res.render("report", { label: label, data: data })
 
-    })
-})
+    });
+});
+
+app.get('/typeOfEvent', (req, res) => {
+    var sql = "select event_type,count(id) as count from event group by event_type";
+    con.query(sql, function(err, results) {
+        if (err) { throw err; }
+
+        var label = []
+        var data = []
+        for (var i = 0; i < results.length; i++) {
+            label.push(String(results[i]['event_type']))
+            data.push(results[i]['count'])
+        }
+
+        res.render("report", { label: label, data: data })
+
+    });
+});
+
+app.get('/allDepartmentEvent', (req, res) => {
+    var sql = "select department,count(id) as count from event group by department";
+    con.query(sql, function(err, results) {
+        if (err) { throw err; }
+
+        var label = []
+        var data = []
+        for (var i = 0; i < results.length; i++) {
+            label.push(String(results[i]['department']))
+            data.push(results[i]['count'])
+        }
+
+        res.render("report", { label: label, data: data })
+
+    });
+});
+
+app.get('/ITDepartmentEvent', (req, res) => {
+    var sql = "select event_type,count(id) as count from event where department = 'IT' group by event_type";
+    con.query(sql, function(err, results) {
+        if (err) { throw err; }
+
+        var label = []
+        var data = []
+        for (var i = 0; i < results.length; i++) {
+            label.push(String(results[i]['event_type']))
+            data.push(results[i]['count'])
+        }
+
+        res.render("report", { label: label, data: data })
+
+    });
+});
+
+app.get('/CompsDepartmentEvent', (req, res) => {
+    var sql = "select event_type,count(id) as count from event where department = 'Comps' group by event_type";
+    con.query(sql, function(err, results) {
+        if (err) { throw err; }
+
+        var label = []
+        var data = []
+        for (var i = 0; i < results.length; i++) {
+            label.push(String(results[i]['event_type']))
+            data.push(results[i]['count'])
+        }
+
+        res.render("report", { label: label, data: data })
+
+    });
+});
+
+app.get('/MechDepartmentEvent', (req, res) => {
+    var sql = "select event_type,count(id) as count from event where department = 'Mech' group by event_type";
+    con.query(sql, function(err, results) {
+        if (err) { throw err; }
+
+        var label = []
+        var data = []
+        for (var i = 0; i < results.length; i++) {
+            label.push(String(results[i]['event_type']))
+            data.push(results[i]['count'])
+        }
+
+        res.render("report", { label: label, data: data })
+
+    });
+});
+
+app.get('/ExtcDepartmentEvent', (req, res) => {
+    var sql = "select event_type,count(id) as count from event where department = 'Extc' group by event_type";
+    con.query(sql, function(err, results) {
+        if (err) { throw err; }
+
+        var label = []
+        var data = []
+        for (var i = 0; i < results.length; i++) {
+            label.push(String(results[i]['event_type']))
+            data.push(results[i]['count'])
+        }
+
+        res.render("report", { label: label, data: data })
+
+    });
+});
 
 app.get('/verify', (req, res) => {
     var code = req.query.code;

@@ -7,6 +7,15 @@
       /*body{
         overflow-y: scroll;
       }*/
+      h5, strong{
+        font-family: 'Yrsa';
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .p{
+        font-family: 'Montaga';
+        font-size: 16px;
+      }
     </style>
 </head>
 
@@ -14,21 +23,21 @@
     <div>
         <% include navbar.ejs ;%>
     </div>
-    <div class="container-fluid" style="margin-top: 15vh;">
+    <div class="container-fluid" style="margin-top: 5vh;">
         <div class="row">
             <div class="col-lg-5 ml-5 overflow-auto">
-                <h2>Events List</h2>
+                <h2 style="font-family: 'Montaga';">Events List</h2>
                 <% results.forEach(function(result){ %>
-                <div class="row border border-dark rounded p-3 mt-5">
+                <div class="row border border-dark rounded p-3 mt-4">
                     <img src="<%= result.event_image %>" width="150" height="150">
                     <div class="ml-3 mt-auto">
-                        <p><strong>Event Name : </strong>
+                        <p class="p"><strong>Event Name : </strong>
                             <%= result.event_name %>
                         </p>
-                        <p><strong>Event Type : </strong>
+                        <p class="p"><strong>Event Type : </strong>
                             <%= result.event_type %>
                         </p>
-                        <p><strong>Event Incharge : </strong>
+                        <p class="p"><strong>Event Incharge : </strong>
                             <%= result.event_incharge %>
                         </p>
                     </div>
@@ -40,38 +49,46 @@
                             <input type="hidden" name="csv_path" value="<%= result.csv_path %>">
                             <input type="hidden" name="certificate_printed" value="<%= result.certificate_printed %>">
                             <input type="hidden" name="event_type" value="<%= result.event_type %>">
-                            <% if(roles == "hod") {%>
-                            <button type="submit" class="btn btn-primary">View Participants</button>
-                            <% } %>
+                            <% if(roles == "hod") {
+                                if(result.csv_uploaded == 1) { %>
+                                    <button type="submit" class="btn btn-primary">View Participants</button>
+                                <% } else {%>    
+                                    <button type="submit" class="btn btn-primary" disabled>View Participants</button>
+                            <% } } %>
+                            <!-- <script>
+                                <% if(result.csv_uploaded == 1) { %>
+                                    document.getElementById("viewParticipants").disabled = true;
+                                <% } %>    
+                            </script> -->
                         </form>
                     </div>
                 </div>
                 <% }) %>
             </div>
             <div class="col-lg-6 ml-5 border-left border-dark overflow-auto">
-                <h4>Click View event to view them here</h4>
+                <!-- <h4>Click View event to view them here</h4> -->
                 <div align="center" class="p-5">
                     <img class="border rounded" id="eventImage" src="/images/dbit.png" width="200" height="200">
                     <p class="mt-4">
                         <!-- <h5>Event Name : </h5> -->
-                        <p id="eventName"><strong>Event Name : </strong> ABC event</p>
+                        <p id="eventName" class="p"><strong>Event Name : </strong> ABC event</p>
                     </p>
                     <p>
                         <!-- <h5>Event Type : </h5> -->
-                        <p id="eventType"><strong>Event Type : </strong> Any Type</p>
+                        <p id="eventType" class="p"><strong>Event Type : </strong> Any Type</p>
                     </p>
                     <p>
                         <!-- <h5>Event Date : </h5> -->
-                        <p id="eventDate"><strong>Event Date : </strong> At given Date</p>
+                        <p id="eventDate" class="p"><strong>Event Date : </strong> At given Date</p>
                     </p>
                     <p>
                         <!-- <h5>Event Incharge : </h5> -->
-                        <p id="eventIncharge"><strong>Event Incharge : </strong> Incharge Name</p>
+                        <p id="eventIncharge" class="p"><strong>Event Incharge : </strong> Incharge Name</p>
                     </p>
                 </div>
                 <p>
-                    <h5>Event Description : </h5>
-                    <p id="eventDescription">Description about event</p>
+                    <h5><strong>Event Description : </strong></h5>
+                    <p id="eventDescription" class="p">Description about event</p>
                 </p>
             </div>
         </div>
@@ -85,7 +102,7 @@
     document.getElementById("eventType").innerHTML = "<strong>Event Type : </strong>"+eventType;
     document.getElementById("eventDate").innerHTML = "<strong>Event Date : </strong>"+eventDate;
     document.getElementById("eventIncharge").innerHTML = "<strong>Event Incharge : </strong>"+eventIncharge;
-    document.getElementById("eventDescription").innerHTML = "<strong>Event Description : </strong>"+eventDescription;
+    document.getElementById("eventDescription").innerHTML = ""+eventDescription;
   }
 </script>
 
