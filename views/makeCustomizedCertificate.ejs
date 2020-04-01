@@ -12,12 +12,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
-
     <style type="text/css">
-      canvas
-        {
-            border:1px solid black
-        }
+    canvas {
+        border: 1px solid black
+    }
     </style>
 </head>
 
@@ -27,124 +25,115 @@
     </div>
     <div class="container-fluid mt-2">
         <div class="row">
-
-          <div class="col-lg-4 mt-4 ml-6">
-            <!-- <a id="button1" type="button">Circle</a>
-            <a id = "button2">Square</a> -->
-            <!-- <a id = "button3">Text</a> -->
-            <div class="col">
-            <h1 class="text-primary bold">Make a Customized Certificate</h1>
-            <!-- <p><button type="button" class="btn btn-outline-primary mt-5" id="button1">Insert a Circle</button></p> -->
-            <!-- <p><button type="button" class="btn btn-outline-primary" id="button2">Insert a Square</button></p> -->
-            <p><button type="button" class="btn btn-outline-primary" id="button3">Insert a Text</button></p>
-            <p><button type="button" class="btn btn-outline-primary"><input type="file" name="img" id="img" accept="image/*"></button></p>
-            <p><button type="button" class="btn btn-outline-primary" id="download">Download the customized template</button></p>
+            <div class="col-lg-4 mt-4 ml-6">
+                <h1 class="text-primary bold">Make a Customized Certificate</h1>
+                <!-- <p><button type="button" class="btn btn-outline-primary mt-5" id="button1">Insert a Circle</button></p> -->
+                <!-- <p><button type="button" class="btn btn-outline-primary" id="button2">Insert a Square</button></p> -->
+                <p><button type="button" class="btn btn-outline-primary" id="button3">Insert a Text</button></p>
+                <p><button type="button" class="btn btn-outline-primary"><input type="file" name="img" id="img" accept="image/*"></button></p>
+                <p><button type="button" class="btn btn-outline-primary" id="download">Download the customized template</button></p>
             </div>
-          </div>
-
-          <div class="col-lg-8 mr-6 mt-4">
-            <canvas id="canvas" width="850" height="600"></canvas>
-          </div>
-
         </div>
-
+        <div class="col-lg-8 mr-6 mt-4">
+            <canvas id="canvas" width="850" height="600"></canvas>
+        </div>
+    </div>
     </div>
 </body>
 <script>
 window.canvas = new fabric.Canvas('canvas');
 
 download.addEventListener("click", function() {
-  // only jpeg is supported by jsPDF
-  var imgData = window.canvas.toDataURL("image/jpeg", 1.0);
-  var pdf = new jsPDF();
+    // only jpeg is supported by jsPDF
+    var imgData = window.canvas.toDataURL("image/jpeg", 1.0);
+    var pdf = new jsPDF();
 
-  pdf.addImage(imgData, 'JPEG', 0, 0);
-  pdf.save("customizedCertificate.pdf");
+    pdf.addImage(imgData, 'JPEG', 0, 0);
+    pdf.save("customizedCertificate.pdf");
 }, false);
-    
+
 $('#button1').click(function() {
-          var circle = new fabric.Circle({
-          radius: 20,
-          fill: 'green',
-          left: 100,
-          top: 100
-              })
-      window.canvas.getObjects();
-      window.canvas.add(circle);
-      window.canvas.selection = false;
-      window.canvas.renderAll();
-      window.canvas.calcOffset();
-       
+    var circle = new fabric.Circle({
+        radius: 20,
+        fill: 'green',
+        left: 100,
+        top: 100
+    })
+    window.canvas.getObjects();
+    window.canvas.add(circle);
+    window.canvas.selection = false;
+    window.canvas.renderAll();
+    window.canvas.calcOffset();
+
 });
 
 $('#button2').click(function() {
-      var rect = new fabric.Rect({
-          width: 50,
-          height: 50,
-          left: 50,
-          top: 50,
-          fill: 'rgb(255,0,0)'
-          })
-      window.canvas.getObjects();
-      window.canvas.add(rect);
-      window.canvas.selection = true;
-      window.canvas.renderAll();
-      window.canvas.calcOffset();
-      
+    var rect = new fabric.Rect({
+        width: 50,
+        height: 50,
+        left: 50,
+        top: 50,
+        fill: 'rgb(255,0,0)'
+    })
+    window.canvas.getObjects();
+    window.canvas.add(rect);
+    window.canvas.selection = true;
+    window.canvas.renderAll();
+    window.canvas.calcOffset();
+
 });
 
 $('#button3').click(function() {
-    
-      var iTextSample = new fabric.IText('sample\nText', {
-          left: 50,
-          top: 50,
-          fontFamily: 'Helvetica',
-          fill: '#333',
-          lineHeight: 1.1
-          // styles: {
-          //     0: {
-          //         0: { textDecoration: 'underline', fontSize: 80 },
-          //         1: { textBackgroundColor: 'red' }
-          //     },
-          //     1: {
-          //         0: { textBackgroundColor: 'rgba(0,255,0,0.5)' },
-          //         4: { fontSize: 20 }
-          //     }
-          // }
-      });
-      window.canvas.getObjects();
-      window.canvas.add(iTextSample);
-      window.canvas.selection = true;
-      window.canvas.renderAll();
-      window.canvas.calcOffset();
-      
+
+    var iTextSample = new fabric.IText('sample\nText', {
+        left: 50,
+        top: 50,
+        fontFamily: 'Helvetica',
+        fill: '#333',
+        lineHeight: 1.1
+        // styles: {
+        //     0: {
+        //         0: { textDecoration: 'underline', fontSize: 80 },
+        //         1: { textBackgroundColor: 'red' }
+        //     },
+        //     1: {
+        //         0: { textBackgroundColor: 'rgba(0,255,0,0.5)' },
+        //         4: { fontSize: 20 }
+        //     }
+        // }
+    });
+    window.canvas.getObjects();
+    window.canvas.add(iTextSample);
+    window.canvas.selection = true;
+    window.canvas.renderAll();
+    window.canvas.calcOffset();
+
 });
 
 document.getElementById('img').onchange = function handleImage(e) {
-var reader = new FileReader();
-  reader.onload = function (event){
-    var imgObj = new Image();
-    imgObj.src = event.target.result;
-    imgObj.onload = function () {
-      var image = new fabric.Image(imgObj);
-      image.set({
-            angle: 0,
-            padding: 10,
-            top: 10,
-            left: 10
-      });
+    var reader = new FileReader();
+    reader.onload = function(event) {
+        var imgObj = new Image();
+        imgObj.src = event.target.result;
+        imgObj.onload = function() {
+            var image = new fabric.Image(imgObj);
+            image.set({
+                angle: 0,
+                padding: 10,
+                top: 10,
+                left: 10
+            });
 
-      window.canvas.getObjects();
-      window.canvas.centerObject(image);
-      window.canvas.add(image);
-      window.canvas.selection = true;
-      window.canvas.renderAll();
-      window.canvas.calcOffset();
+            window.canvas.getObjects();
+            window.canvas.centerObject(image);
+            window.canvas.add(image);
+            window.canvas.selection = true;
+            window.canvas.renderAll();
+            window.canvas.calcOffset();
+        }
     }
-  }
-  reader.readAsDataURL(e.target.files[0]);
+    reader.readAsDataURL(e.target.files[0]);
 }
-
 </script>
 
 </html>

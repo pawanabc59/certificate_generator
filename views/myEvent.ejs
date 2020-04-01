@@ -4,46 +4,57 @@
 <head>
     <title>View My Events</title>
     <style type="text/css">
-        h5, strong, label{
+    h5,
+    strong,
+    label {
         font-family: 'Yrsa';
         font-size: 20px;
         font-weight: bold;
-      }
-      .p{
+    }
+
+    .p {
         font-family: 'Montaga';
         font-size: 16px;
-      }
-       .form-group input{
-        border:0;
+    }
+
+    .form-group input {
+        border: 0;
         /*border-bottom: 1px solid #000;*/
         outline: none;
         outline-style: none;
         box-shadow: none;
         background: transparent;
-      }
-      .form-group input:focus{ 
- border:none; 
- outline:none;
- outline-style: none;
- border-bottom:1px solid #000; 
- box-shadow: none;
-}
-.eventsBox{
+    }
+
+    .form-group input:focus {
+        border: none;
+        outline: none;
+        outline-style: none;
+        border-bottom: 1px solid #000;
+        box-shadow: none;
+    }
+
+    .eventsBox {
         height: 79.1vh;
         padding-bottom: 5vh;
         overflow: auto;
         /*overflow-y: scroll;*/
-      }
-      .eventsBox::-webkit-scrollbar { display:none }
+    }
 
-      .showEventBox{
+    .eventsBox::-webkit-scrollbar {
+        display: none
+    }
+
+    .showEventBox {
         height: 79.1vh;
         padding-bottom: 5vh;
         overflow: auto;
         /*overflow-y: scroll;*/
-      }
-      .showEventBox::-webkit-scrollbar { display:none }
+    }
 
+    .showEventBox::-webkit-scrollbar {
+        display: none
+    }
     </style>
 </head>
 
@@ -94,7 +105,9 @@
                             <p><button type="button" class="btn btn-info" onclick="viewEvent('<%= result.event_image %>','<%= result.event_name %>','<%= result.event_type %>','<%= result.event_date %>','<%= result.event_incharge %>','<%= result.event_description %>','<%= result.id %>')">Edit Event</button></p>
                             <p><button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadcsv" onclick="upload_csv('<%= result.id %>', '<%= result.csv_uploaded %>')">Upload CSV</button></p>
                             <p><button class="btn btn-danger" type="button" data-toggle="modal" data-target="#deleteEvent" onclick="delete_event('<%= result.id %>','<%= result.event_name %>')">Delete</button></p>
-                            <p class="p">Number of Participants : <%= result.numberOfParticipants %></p>
+                            <p class="p">Number of Participants :
+                                <%= result.numberOfParticipants %>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -103,47 +116,47 @@
             <div class="col-lg-5 ml-5 border-left border-dark overflow-auto showEventBox">
                 <!-- <h4>Click View event to view them here</h4> -->
                 <form action="/updateEvent" class="form-horizontal" method="post">
-                <div align="center" class="p-5">
-                    <img class="border rounded" id="eventImage" src="/images/dbit.png" width="200" height="200">
-                    <input type="hidden" name="eventId" id="eventId">
-                    <div class="form-group mt-4 row">
-                        <label class="control-label">Event Name : </label>
-                        <div class="col-sm-10">
-                        <input class="form-control p" id="eventName" type="text" name="eventName" placeholder="Event Name">
+                    <div align="center" class="p-5">
+                        <img class="border rounded" id="eventImage" src="/images/dbit.png" width="200" height="200">
+                        <input type="hidden" name="eventId" id="eventId">
+                        <div class="form-group mt-4 row">
+                            <label class="control-label">Event Name : </label>
+                            <div class="col-sm-10">
+                                <input class="form-control p" id="eventName" type="text" name="eventName" placeholder="Event Name">
+                            </div>
+                            <!-- <input type="text" name="eventName" id="eventName" placeholder="Event Name"> -->
+                            <!-- <p id="eventName" class="p"><strong>Event Name : </strong> ABC event</p> -->
                         </div>
-                        <!-- <input type="text" name="eventName" id="eventName" placeholder="Event Name"> -->
-                        <!-- <p id="eventName" class="p"><strong>Event Name : </strong> ABC event</p> -->
-                    </div>
-                    <div class="form-group row">
-                        <label class="control-label">Event Type : </label>
-                        <div class="col-sm-10">
-                        <input class="form-control p" id="eventType" type="text" name="eventType" placeholder="Event Type">
+                        <div class="form-group row">
+                            <label class="control-label">Event Type : </label>
+                            <div class="col-sm-10">
+                                <input class="form-control p" id="eventType" type="text" name="eventType" placeholder="Event Type">
+                            </div>
+                            <!-- <p id="eventType" class="p"><strong>Event Type : </strong> Any Type</p> -->
                         </div>
-                        <!-- <p id="eventType" class="p"><strong>Event Type : </strong> Any Type</p> -->
-                    </div>
-                    <div class="form-group row">
-                        <label class="control-label">Event Date : </label>
-                        <div class="col-sm-10">
-                        <input class="form-control p" id="eventDate" type="text" name="eventDate" placeholder="Event Date" disabled>
+                        <div class="form-group row">
+                            <label class="control-label">Event Date : </label>
+                            <div class="col-sm-10">
+                                <input class="form-control p" id="eventDate" type="text" name="eventDate" placeholder="Event Date" disabled>
+                            </div>
+                            <!-- <p id="eventDate" class="p"><strong>Event Date : </strong> At given Date</p> -->
                         </div>
-                        <!-- <p id="eventDate" class="p"><strong>Event Date : </strong> At given Date</p> -->
-                    </div>
-                    <div class="form-group row">
-                        <label class="control-label">Event Incharge : </label>
+                        <div class="form-group row">
+                            <label class="control-label">Event Incharge : </label>
                             <div class="col-sm-8">
-                        <input class="form-control p" id="eventIncharge" type="text" name="eventIncharge" placeholder="Event Incharge Name">
+                                <input class="form-control p" id="eventIncharge" type="text" name="eventIncharge" placeholder="Event Incharge Name">
+                            </div>
+                            <!-- <p id="eventIncharge" class="p"><strong>Event Incharge : </strong> Incharge Name</p> -->
                         </div>
-                        <!-- <p id="eventIncharge" class="p"><strong>Event Incharge : </strong> Incharge Name</p> -->
                     </div>
-                </div>
-                <div class="form-group">
-                    <h5>Event Description : </h5>
-                    <textarea class="form-control p" id="eventDescription" name="eventDescription" >
-                        
+                    <div class="form-group">
+                        <h5>Event Description : </h5>
+                        <textarea class="form-control p" id="eventDescription" name="eventDescription">
+
                     </textarea>
-                    <!-- <p id="eventDescription" class="p">Description about event</p> -->
-                </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                        <!-- <p id="eventDescription" class="p">Description about event</p> -->
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
         </div>
@@ -212,7 +225,7 @@ function viewEvent(eventImage, eventName, eventType, eventDate, eventIncharge, e
     document.getElementById("eventType").value = "" + eventType;
     document.getElementById("eventDate").value = "" + eventDate;
     document.getElementById("eventIncharge").value = "" + eventIncharge;
-    document.getElementById("eventId").value = ""+eventId;
+    document.getElementById("eventId").value = "" + eventId;
     document.getElementById("eventDescription").innerHTML = "" + eventDescription;
 }
 </script>

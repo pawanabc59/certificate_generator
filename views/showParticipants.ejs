@@ -19,8 +19,8 @@
         <h2>Participants Table</h2>
         <% if(alert=="true") { %>
         <div class="alert alert-success alert-dismissible">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Certificate Printed successfully.</strong>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Certificate Printed successfully.</strong>
         </div>
         <% } %>
         <table class="table">
@@ -70,7 +70,6 @@
                         <input type="hidden" name="event_id" value="<%= event_id %>">
                         <input type="hidden" name="csv_path" value="<%= csv_path %>">
                         <input type="hidden" name="certificate_printed" value="<%= certificate_printed %>">
-
                         <div class="row">
                             <div class="radio">
                                 <label><input type="radio" name="selectedTemplate" value="firstTemplate"><img alt="firstImage" src="./images/2026c.jpg" width="150" height="250"></label>
@@ -79,7 +78,6 @@
                                 <label><input type="radio" name="selectedTemplate" value="secondTemplate"><img src="./images/3282105c1.jpg" width="250" height="150"></label>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="radio">
                                 <label><input type="radio" name="selectedTemplate" value="thirdTemplate"><img src="./images/354.jpg" width="250" height="150"></label>
@@ -87,7 +85,6 @@
                             <div class="radio" style="margin-left: 10vw;">
                                 <label><input type="radio" name="selectedTemplate" value="defaultTemplate"><img src="./images/akki_certi.PNG" width="250" height="150" ml-4></label>
                             </div>
-
                         </div>
                     </div>
                     <!-- Modal footer -->
