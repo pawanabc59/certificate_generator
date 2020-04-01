@@ -28,6 +28,21 @@
  border-bottom:1px solid #000; 
  box-shadow: none;
 }
+.eventsBox{
+        height: 79.1vh;
+        padding-bottom: 5vh;
+        overflow: auto;
+        /*overflow-y: scroll;*/
+      }
+      .eventsBox::-webkit-scrollbar { display:none }
+
+      .showEventBox{
+        height: 79.1vh;
+        padding-bottom: 5vh;
+        overflow: auto;
+        /*overflow-y: scroll;*/
+      }
+      .showEventBox::-webkit-scrollbar { display:none }
 
     </style>
 </head>
@@ -50,7 +65,7 @@
         </div>
         <% } %>
         <div class="row">
-            <div class="col-lg-5 ml-5 overflow-auto">
+            <div class="col-lg-6 ml-5 overflow-auto eventsBox">
                 <h2 style="font-family: 'Montaga';">Events List</h2>
                 <% results.forEach(function(result){ %>
                 <div class="border border-dark rounded p-3 mt-4">
@@ -79,12 +94,13 @@
                             <p><button type="button" class="btn btn-info" onclick="viewEvent('<%= result.event_image %>','<%= result.event_name %>','<%= result.event_type %>','<%= result.event_date %>','<%= result.event_incharge %>','<%= result.event_description %>','<%= result.id %>')">Edit Event</button></p>
                             <p><button class="btn btn-primary" type="button" data-toggle="modal" data-target="#uploadcsv" onclick="upload_csv('<%= result.id %>', '<%= result.csv_uploaded %>')">Upload CSV</button></p>
                             <p><button class="btn btn-danger" type="button" data-toggle="modal" data-target="#deleteEvent" onclick="delete_event('<%= result.id %>','<%= result.event_name %>')">Delete</button></p>
+                            <p class="p">Number of Participants : <%= result.numberOfParticipants %></p>
                         </div>
                     </div>
                 </div>
                 <% }) %>
             </div>
-            <div class="col-lg-6 ml-5 border-left border-dark overflow-auto">
+            <div class="col-lg-5 ml-5 border-left border-dark overflow-auto showEventBox">
                 <!-- <h4>Click View event to view them here</h4> -->
                 <form action="/updateEvent" class="form-horizontal" method="post">
                 <div align="center" class="p-5">

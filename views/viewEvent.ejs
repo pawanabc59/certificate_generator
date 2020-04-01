@@ -4,9 +4,14 @@
 <head>
     <title>View Events</title>
     <style type="text/css">
-      /*body{
-        overflow-y: scroll;
-      }*/
+        *{
+            margin: 0;
+            padding:0;
+        }
+      body{
+        margin: 0;
+        padding:0;height: 100%;
+      }
       h5, strong{
         font-family: 'Yrsa';
         font-size: 20px;
@@ -16,6 +21,22 @@
         font-family: 'Montaga';
         font-size: 16px;
       }
+      .eventsBox{
+        height: 79.1vh;
+        padding-bottom: 5vh;
+        overflow: auto;
+        /*overflow-y: scroll;*/
+      }
+      .eventsBox::-webkit-scrollbar { display:none }
+
+      .showEventBox{
+        height: 79.1vh;
+        padding-bottom: 5vh;
+        overflow: auto;
+        /*overflow-y: scroll;*/
+      }
+      .showEventBox::-webkit-scrollbar { display:none }
+
     </style>
 </head>
 
@@ -23,12 +44,12 @@
     <div>
         <% include navbar.ejs ;%>
     </div>
-    <div class="container-fluid" style="margin-top: 5vh;">
-        <div class="row">
-            <div class="col-lg-5 ml-5 overflow-auto">
+    <div class="container-fluid" style="margin-top: 5vh; height: 100%">
+        <div class="row" style="overflow: hidden;">
+            <div class="col-lg-6 ml-4 eventsBox">
                 <h2 style="font-family: 'Montaga';">Events List</h2>
                 <% results.forEach(function(result){ %>
-                <div class="row border border-dark rounded p-3 mt-4">
+                <div class="row border border-dark rounded p-2 mt-4">
                     <img src="<%= result.event_image %>" width="150" height="150">
                     <div class="ml-3 mt-auto">
                         <p class="p"><strong>Event Name : </strong>
@@ -40,6 +61,7 @@
                         <p class="p"><strong>Event Incharge : </strong>
                             <%= result.event_incharge %>
                         </p>
+
                     </div>
                     <div class="mt-auto ml-auto mb-auto">
                         <button type="button" class="btn btn-info mb-4" onclick="viewEvent('<%= result.event_image %>','<%= result.event_name %>','<%= result.event_type %>','<%= result.event_date %>','<%= result.event_incharge %>','<%= result.event_description %>')">View Event</button>
@@ -55,17 +77,21 @@
                                 <% } else {%>    
                                     <button type="submit" class="btn btn-primary" disabled>View Participants</button>
                             <% } } %>
+                            <p class="p"></p>
                             <!-- <script>
                                 <% if(result.csv_uploaded == 1) { %>
                                     document.getElementById("viewParticipants").disabled = true;
                                 <% } %>    
                             </script> -->
                         </form>
+                        <div>
+                            <p class="p">Number of Participants : <%= result.numberOfParticipants %></p>
+                        </div>
                     </div>
                 </div>
                 <% }) %>
             </div>
-            <div class="col-lg-6 ml-5 border-left border-dark overflow-auto">
+            <div class="col-lg-5 ml-5 border-left border-dark showEventBox">
                 <!-- <h4>Click View event to view them here</h4> -->
                 <div align="center" class="p-5">
                     <img class="border rounded" id="eventImage" src="/images/dbit.png" width="200" height="200">

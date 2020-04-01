@@ -241,14 +241,14 @@ app.get("/myEvent", (req, res) => {
             alert_csv = 'false';
         } else {
             alert_csv = 'true'
-            uploadCsv_alert_int == 1;
+            uploadCsv_alert_int == 0;
         }
         res.render("myEvent", { results: results, alert: alert, alert_csv: alert_csv });
     });
 
 });
 
-app.post("/updateEvent", (req,res)=>{
+app.post("/updateEvent", (req, res) => {
     var eventName = req.body.eventName;
     var eventType = req.body.eventType;
     var eventDate = req.body.eventDate;
@@ -256,9 +256,9 @@ app.post("/updateEvent", (req,res)=>{
     var eventDescription = req.body.eventDescription;
     var eventId = req.body.eventId;
 
-    var sql = "UPDATE `event` SET `event_name`='"+eventName+"',`event_type`='"+eventType+"',`event_incharge`='"+eventIncharge+"',`incharge_username`='"+eventIncharge+"',`event_description`='"+eventDescription+"' WHERE `id`='"+eventId+"'"
-    con.query(sql, function(err, results){
-        if (err) {throw err; }
+    var sql = "UPDATE `event` SET `event_name`='" + eventName + "',`event_type`='" + eventType + "',`event_incharge`='" + eventIncharge + "',`incharge_username`='" + eventIncharge + "',`event_description`='" + eventDescription + "' WHERE `id`='" + eventId + "'"
+    con.query(sql, function(err, results) {
+        if (err) { throw err; }
         res.redirect("/myEvent");
     });
 
@@ -281,11 +281,19 @@ app.post("/upload_csv", upload.single('CSVFile'), (req, res) => {
     // console.log("files : "+req.file);
     // console.log("file name : "+req.file.originalname);
     var csv_path = "/uploads/" + req.session.username + "/" + req.file.originalname;
+    var csv_path2 = "./public" + csv_path;
     var sql = "UPDATE `event` SET `csv_path`= '" + csv_path + "' , `csv_uploaded` = '" + 1 + "' WHERE id = '" + event_id + "'";
     con.query(sql, function(err, results) {
         if (err) { throw err; }
-        uploadCsv_alert_int = 1;
-        res.redirect("/myEvent");
+
+        csv().fromFile(csv_path2).then((jsonObject) => {
+            var sql2 = "UPDATE `event` SET `numberOfParticipants`= '" + jsonObject.length + "' WHERE `id`='" + event_id + "'";
+            con.query(sql2, function(err, results2) {
+                if (err) { throw err; }
+                uploadCsv_alert_int = 1;
+                res.redirect("/myEvent");
+            });
+        });
     });
 });
 
@@ -303,6 +311,7 @@ app.post("/showParticipants", (req, res) => {
 
     csv().fromFile(csv_path).then((jsonObject) => {
         mkdirp("./images/qrcode/" + event_name);
+
         for (var i = 0; i < jsonObject.length; i++) {
             var code = randomstring.generate()
             var sql = "INSERT INTO `gen_certificates`(`email`, `event_type`, `code`) VALUES(?,?,?)";
@@ -322,8 +331,8 @@ app.post("/showParticipants", (req, res) => {
         //     printCertificates_alert_int = 0;
         // }
         res.render("showParticipants", { jsonObject: jsonObject, event_id: event_id, event_name: event_name, csv_path: csv_path, alert: 'false', certificate_printed: certificate_printed });
-    })
-})
+    });
+});
 
 app.post("/printCertificates", (req, res) => {
 
@@ -435,7 +444,7 @@ app.get('/logout', function(req, res) {
 app.get('/report', (req, res) => {
     var sql = "select event_type,count(id) as count from event group by event_type";
     var sql2 = "select event_incharge from event group by event_incharge";
-    con.query(sql2, function(err, results2){
+    con.query(sql2, function(err, results2) {
         con.query(sql, function(err, results) {
             if (err) { throw err; }
 
@@ -462,11 +471,11 @@ app.post('/eventReport', (req, res) => {
         var sql = "select department,count(id) as count from event group by department";
         groupby = 'department';
     } else {
-        var sql = "select event_type,count(id) as count from event where department = '"+typeOfEvent+"' group by event_type";
+        var sql = "select event_type,count(id) as count from event where department = '" + typeOfEvent + "' group by event_type";
         groupby = 'event_type';
     }
     var sql2 = "select event_incharge from event group by event_incharge";
-    con.query(sql2, function(err, results2){
+    con.query(sql2, function(err, results2) {
         con.query(sql, function(err, results) {
             if (err) { throw err; }
 
@@ -484,11 +493,11 @@ app.post('/eventReport', (req, res) => {
 
 });
 
-app.post("/facultyEvent", (req, res)=>{
+app.post("/facultyEvent", (req, res) => {
     var inchargeEvent = req.body.inchargeEvent;
-    var sql = "select event_type,count(id) as count from event where event_incharge = '"+inchargeEvent+"' group by event_type";
+    var sql = "select event_type,count(id) as count from event where event_incharge = '" + inchargeEvent + "' group by event_type";
     var sql2 = "select event_incharge from event group by event_incharge";
-    con.query(sql2, function(err, results2){
+    con.query(sql2, function(err, results2) {
         con.query(sql, function(err, results) {
             if (err) { throw err; }
 
