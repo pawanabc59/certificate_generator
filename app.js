@@ -244,9 +244,25 @@ app.get("/myEvent", (req, res) => {
             uploadCsv_alert_int == 1;
         }
         res.render("myEvent", { results: results, alert: alert, alert_csv: alert_csv });
-    })
+    });
 
-})
+});
+
+app.post("/updateEvent", (req,res)=>{
+    var eventName = req.body.eventName;
+    var eventType = req.body.eventType;
+    var eventDate = req.body.eventDate;
+    var eventIncharge = req.body.eventIncharge;
+    var eventDescription = req.body.eventDescription;
+    var eventId = req.body.eventId;
+
+    var sql = "UPDATE `event` SET `event_name`='"+eventName+"',`event_type`='"+eventType+"',`event_incharge`='"+eventIncharge+"',`incharge_username`='"+eventIncharge+"',`event_description`='"+eventDescription+"' WHERE `id`='"+eventId+"'"
+    con.query(sql, function(err, results){
+        if (err) {throw err; }
+        res.redirect("/myEvent");
+    });
+
+});
 
 app.post("/deleteEvent", (req, res) => {
     var event_id = req.body.event_id;
