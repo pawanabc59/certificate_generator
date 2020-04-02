@@ -189,7 +189,9 @@ app.post("/addEvent", upload.array('eventImage', 1), (req, res) => {
 
     // var eventPicture = '/'+path2+"/"+req.files[0].originalname;
     var eventPicture = '/uploads/' + req.session.username + "/" + req.files[0].originalname;
-    console.log("image " + eventPicture);
+    // console.log("image " + eventPicture);
+
+    // console.log("Event date selected is "+event_date);
 
 
     var sql = "INSERT INTO `event`(`event_name`, `event_type`,`event_date`, `event_incharge`,`incharge_username`,`department`,`event_image`, `event_description`) VALUES ('" + event_name + "','" + event_type + "','" + event_date + "','" + req.session.username + "','" + req.session.username + "','" + req.session.department + "','" + eventPicture + "','" + event_description + "')";
@@ -256,7 +258,7 @@ app.post("/updateEvent", (req, res) => {
     var eventDescription = req.body.eventDescription;
     var eventId = req.body.eventId;
 
-    var sql = "UPDATE `event` SET `event_name`='" + eventName + "',`event_type`='" + eventType + "',`event_incharge`='" + eventIncharge + "',`incharge_username`='" + eventIncharge + "',`event_description`='" + eventDescription + "' WHERE `id`='" + eventId + "'"
+    var sql = "UPDATE `event` SET `event_name`='" + eventName + "',`event_type`='" + eventType + "',`event_date`='"+eventDate+"' ,`event_incharge`='" + eventIncharge + "',`incharge_username`='" + eventIncharge + "',`event_description`='" + eventDescription + "' WHERE `id`='" + eventId + "'"
     con.query(sql, function(err, results) {
         if (err) { throw err; }
         res.redirect("/myEvent");
@@ -496,6 +498,28 @@ app.post('/eventReport', (req, res) => {
 app.post("/facultyEvent", (req, res) => {
     var inchargeEvent = req.body.inchargeEvent;
     var sql = "select event_type,count(id) as count from event where event_incharge = '" + inchargeEvent + "' group by event_type";
+    var sql2 = "select event_incharge from event group by event_incharge";
+    con.query(sql2, function(err, results2) {
+        con.query(sql, function(err, results) {
+            if (err) { throw err; }
+
+            var label = []
+            var data = []
+            for (var i = 0; i < results.length; i++) {
+                label.push(String(results[i]['event_type']))
+                data.push(results[i]['count'])
+            }
+
+            res.render("report", { results2: results2, label: label, data: data })
+
+        });
+    });
+});
+
+app.post("/startEndDate", (req, res) => {
+    var startDate = req.body.startDate;
+    var endDate = req.body.endDate;
+    var sql = "select event_type,count(id) as count from event where `event_date` BETWEEN '"+startDate+"' AND '"+endDate+"' group by event_type;";
     var sql2 = "select event_incharge from event group by event_incharge";
     con.query(sql2, function(err, results2) {
         con.query(sql, function(err, results) {

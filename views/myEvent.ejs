@@ -160,15 +160,22 @@
                         </div>
                         <div class="form-group row">
                             <label class="control-label">Event Type : </label>
-                            <div class="col-sm-10">
+                            <!-- <div class="col-sm-10">
                                 <input class="form-control p" id="eventType" type="text" name="eventType" placeholder="Event Type">
-                            </div>
+                            </div> -->
+                            <div class="col-sm-10">
+                            <select class="form-control" id="eventType" name="eventType">
+                                <option value="talk">Talk</option>
+                                <option value="hackathons">Hackathons</option>
+                                <option value="competition">Competition</option>
+                            </select>
+                        </div>
                             <!-- <p id="eventType" class="p"><strong>Event Type : </strong> Any Type</p> -->
                         </div>
                         <div class="form-group row">
                             <label class="control-label">Event Date : </label>
                             <div class="col-sm-10">
-                                <input class="form-control p" id="eventDate" type="text" name="eventDate" placeholder="Event Date" disabled>
+                                <input class="form-control p" id="eventDate" type="date" name="eventDate" placeholder="Event Date">
                             </div>
                             <!-- <p id="eventDate" class="p"><strong>Event Date : </strong> At given Date</p> -->
                         </div>
