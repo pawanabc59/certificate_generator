@@ -12,6 +12,9 @@ const fs = require('fs');
 const QRCode = require('qrcode');
 const mkdirp = require('mkdirp');
 const randomstring = require('randomstring');
+// const localip = require('local-ip');
+const ip = require('ip');
+
 // var nodemailer = require('nodemailer');
 
 
@@ -71,6 +74,18 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
+// var iface = 'wlan4';
+// var myIPaddress = ip.address();
+// console.log("This is my ip address : "+myIPaddress);
+ 
+// localip(iface, function(err, res) {
+//   if (err) {
+//     throw err;
+//   }
+//   console.log('My local ip address on ' + iface + ' is ' + res);
+//   myIPaddress = res;
+// });
 
 app.get("/demo", (req, res) => {
     res.render("test");
@@ -258,7 +273,7 @@ app.post("/updateEvent", (req, res) => {
     var eventDescription = req.body.eventDescription;
     var eventId = req.body.eventId;
 
-    var sql = "UPDATE `event` SET `event_name`='" + eventName + "',`event_type`='" + eventType + "',`event_date`='"+eventDate+"' ,`event_incharge`='" + eventIncharge + "',`incharge_username`='" + eventIncharge + "',`event_description`='" + eventDescription + "' WHERE `id`='" + eventId + "'"
+    var sql = "UPDATE `event` SET `event_name`='" + eventName + "',`event_type`='" + eventType + "',`event_date`='" + eventDate + "' ,`event_incharge`='" + eventIncharge + "',`incharge_username`='" + eventIncharge + "',`event_description`='" + eventDescription + "' WHERE `id`='" + eventId + "'"
     con.query(sql, function(err, results) {
         if (err) { throw err; }
         res.redirect("/myEvent");
@@ -321,7 +336,7 @@ app.post("/showParticipants", (req, res) => {
                 if (err) { throw err; }
                 console.log(results)
             })
-            QRCode.toFile("./images/qrcode/" + event_name + "/" + jsonObject[i].Email + ".png", "http://192.168.43.151:5655/verify?code=" + code, {}, function(err) {
+            QRCode.toFile("./images/qrcode/" + event_name + "/" + jsonObject[i].Email + ".png", "http://192.168.0.105:5655/verify?code=" + code, {}, function(err) {
                 if (err) throw err
                 console.log('qrcode done');
             });
@@ -332,7 +347,7 @@ app.post("/showParticipants", (req, res) => {
         //     alert = 'true'
         //     printCertificates_alert_int = 0;
         // }
-        res.render("showParticipants", { jsonObject: jsonObject, event_id: event_id, event_name: event_name, csv_path: csv_path, alert: 'false', certificate_printed: certificate_printed });
+        res.render("showParticipants", { jsonObject: jsonObject, event_id: event_id, event_name: event_name, event_type: event_type, csv_path: csv_path, alert: 'false', certificate_printed: certificate_printed });
     });
 });
 
@@ -341,6 +356,7 @@ app.post("/printCertificates", (req, res) => {
     var event_name = req.body.event_name;
     var event_id = req.body.event_id;
     var csv_path = req.body.csv_path;
+    var event_type = req.body.event_type;
     var certificate_printed = req.body.certificate_printed;
     var selectedTemplate = req.body.selectedTemplate;
 
@@ -364,12 +380,12 @@ app.post("/printCertificates", (req, res) => {
 
             if (selectedTemplate == "firstTemplate") {
                 pdfObj2.pdf(event_name, jsonObject[i].Name, jsonObject[i].Rank, jsonObject[i].Email, i);
-                // sendCertificates(event_name, jsonObject[i].Name, jsonObject[i].Email, );
+                sendCertificates(event_name, jsonObject[i].Name, jsonObject[i].Email, );
 
             } else if (selectedTemplate == "secondTemplate") {
                 pdfObj3.pdf(event_name, jsonObject[i].Name, jsonObject[i].Rank, jsonObject[i].Email, i);
                 console.log("email for recipent" + jsonObject[i].Email);
-                // sendCertificates(event_name, jsonObject[i].Name, jsonObject[i].Email);
+                sendCertificates(event_name, jsonObject[i].Name, jsonObject[i].Email);
 
             }
 
@@ -379,19 +395,24 @@ app.post("/printCertificates", (req, res) => {
             // }
             else {
                 pdfObj1.pdf(event_name, jsonObject[i].Name, jsonObject[i].Rank, jsonObject[i].Email, i);
-                // sendCertificates(event_name, jsonObject[i].Name, jsonObject[i].Email);
+                sendCertificates(event_name, jsonObject[i].Name, jsonObject[i].Email);
             }
 
 
 
             // pdfObj.pdf(event_name,jsonObject[i].Name,jsonObject[i].Rank);
+            var sql2 = "INSERT INTO `participants`(`email`, `event_name`, `event_type`) VALUES ('" + jsonObject[i].Email + "','" + event_name + "','" + event_type + "')";
+        con.query(sql2, function(err, results) {
+            if (err) { throw err; }
+        });
 
         }
         // }
+
         var sql = "UPDATE `event` SET `certificate_printed` = '" + 1 + "' WHERE id = '" + event_id + "'";
         con.query(sql, function(err, results) {
             if (err) { throw err; }
-            res.render("showParticipants", { jsonObject: jsonObject, event_id: event_id, event_name: event_name, csv_path: csv_path, alert: 'true', certificate_printed: certificate_printed });
+            res.render("showParticipants", { jsonObject: jsonObject, event_id: event_id, event_name: event_name, event_type: event_type, csv_path: csv_path, alert: 'true', certificate_printed: certificate_printed });
         });
     });
 
@@ -446,19 +467,22 @@ app.get('/logout', function(req, res) {
 app.get('/report', (req, res) => {
     var sql = "select event_type,count(id) as count from event group by event_type";
     var sql2 = "select event_incharge from event group by event_incharge";
-    con.query(sql2, function(err, results2) {
-        con.query(sql, function(err, results) {
-            if (err) { throw err; }
+    var sql3 = "select email from participants group by email";
+    con.query(sql3, function(err, results3) {
+        con.query(sql2, function(err, results2) {
+            con.query(sql, function(err, results) {
+                if (err) { throw err; }
 
-            var label = []
-            var data = []
-            for (var i = 0; i < results.length; i++) {
-                label.push(String(results[i]['event_type']))
-                data.push(results[i]['count'])
-            }
+                var label = []
+                var data = []
+                for (var i = 0; i < results.length; i++) {
+                    label.push(String(results[i]['event_type']))
+                    data.push(results[i]['count'])
+                }
 
-            res.render("report", { results2: results2, label: label, data: data })
+                res.render("report", { results3: results3, results2: results2, label: label, data: data })
 
+            });
         });
     });
 });
@@ -477,41 +501,70 @@ app.post('/eventReport', (req, res) => {
         groupby = 'event_type';
     }
     var sql2 = "select event_incharge from event group by event_incharge";
-    con.query(sql2, function(err, results2) {
-        con.query(sql, function(err, results) {
-            if (err) { throw err; }
+    var sql3 = "select email from participants group by email";
+    con.query(sql3, function(err, results3) {
+        con.query(sql2, function(err, results2) {
+            con.query(sql, function(err, results) {
+                if (err) { throw err; }
 
-            var label = []
-            var data = []
-            for (var i = 0; i < results.length; i++) {
-                label.push(String(results[i][groupby]))
-                data.push(results[i]['count'])
-            }
+                var label = []
+                var data = []
+                for (var i = 0; i < results.length; i++) {
+                    label.push(String(results[i][groupby]))
+                    data.push(results[i]['count'])
+                }
 
-            res.render("report", { results2: results2, label: label, data: data })
+                res.render("report", { results3: results3, results2: results2, label: label, data: data })
 
+            });
         });
     });
-
 });
 
 app.post("/facultyEvent", (req, res) => {
     var inchargeEvent = req.body.inchargeEvent;
     var sql = "select event_type,count(id) as count from event where event_incharge = '" + inchargeEvent + "' group by event_type";
     var sql2 = "select event_incharge from event group by event_incharge";
-    con.query(sql2, function(err, results2) {
-        con.query(sql, function(err, results) {
-            if (err) { throw err; }
+    var sql3 = "select email from participants group by email";
+    con.query(sql3, function(err, results3) {
+        con.query(sql2, function(err, results2) {
+            con.query(sql, function(err, results) {
+                if (err) { throw err; }
 
-            var label = []
-            var data = []
-            for (var i = 0; i < results.length; i++) {
-                label.push(String(results[i]['event_type']))
-                data.push(results[i]['count'])
-            }
+                var label = []
+                var data = []
+                for (var i = 0; i < results.length; i++) {
+                    label.push(String(results[i]['event_type']))
+                    data.push(results[i]['count'])
+                }
 
-            res.render("report", { results2: results2, label: label, data: data })
+                res.render("report", { results3: results3, results2: results2, label: label, data: data })
 
+            });
+        });
+    });
+});
+
+app.post("/participantsEvent", (req, res) => {
+    var participantsEmail = req.body.participantsEmail;
+    var sql = "select event_type,count(id) as count from participants where email = '" + participantsEmail + "' group by event_name,event_type";
+    var sql2 = "select event_incharge from event group by event_incharge";
+    var sql3 = "select email from participants group by email";
+    con.query(sql3, function(err, results3) {
+        con.query(sql2, function(err, results2) {
+            con.query(sql, function(err, results) {
+                if (err) { throw err; }
+
+                var label = []
+                var data = []
+                for (var i = 0; i < results.length; i++) {
+                    label.push(String(results[i]['event_type']))
+                    data.push(results[i]['count'])
+                }
+
+                res.render("report", { results3: results3, results2: results2, label: label, data: data })
+
+            });
         });
     });
 });
@@ -519,21 +572,24 @@ app.post("/facultyEvent", (req, res) => {
 app.post("/startEndDate", (req, res) => {
     var startDate = req.body.startDate;
     var endDate = req.body.endDate;
-    var sql = "select event_type,count(id) as count from event where `event_date` BETWEEN '"+startDate+"' AND '"+endDate+"' group by event_type;";
+    var sql = "select event_type,count(id) as count from event where `event_date` BETWEEN '" + startDate + "' AND '" + endDate + "' group by event_type;";
     var sql2 = "select event_incharge from event group by event_incharge";
-    con.query(sql2, function(err, results2) {
-        con.query(sql, function(err, results) {
-            if (err) { throw err; }
+    var sql3 = "select email from participants group by email";
+    con.query(sql3, function(err, results3) {
+        con.query(sql2, function(err, results2) {
+            con.query(sql, function(err, results) {
+                if (err) { throw err; }
 
-            var label = []
-            var data = []
-            for (var i = 0; i < results.length; i++) {
-                label.push(String(results[i]['event_type']))
-                data.push(results[i]['count'])
-            }
+                var label = []
+                var data = []
+                for (var i = 0; i < results.length; i++) {
+                    label.push(String(results[i]['event_type']))
+                    data.push(results[i]['count'])
+                }
 
-            res.render("report", { results2: results2, label: label, data: data })
+                res.render("report", { results3: results3, results2: results2, label: label, data: data })
 
+            });
         });
     });
 });

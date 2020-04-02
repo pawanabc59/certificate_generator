@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 02, 2020 at 09:14 AM
+-- Generation Time: Apr 02, 2020 at 08:35 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.8
 
@@ -32,7 +32,7 @@ CREATE TABLE `event` (
   `id` int(100) NOT NULL,
   `event_name` varchar(200) NOT NULL,
   `event_type` varchar(100) NOT NULL,
-  `event_date` date NOT NULL,
+  `event_date` varchar(100) NOT NULL,
   `event_incharge` varchar(100) NOT NULL,
   `incharge_username` varchar(100) NOT NULL,
   `department` varchar(100) NOT NULL,
@@ -49,10 +49,10 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`id`, `event_name`, `event_type`, `event_date`, `event_incharge`, `incharge_username`, `department`, `numberOfParticipants`, `csv_path`, `event_image`, `event_description`, `csv_uploaded`, `certificate_printed`) VALUES
-(16, 'Mumbai Hackathon', 'hackathons', '2020-02-25', 'deepak', 'deepak', 'IT', '3', '/uploads/deepak/hackathon.csv', '/uploads/deepak/download.png', 'This is Mumbai hackathon event.', '1', ''),
+(16, 'Mumbai Hackathon', 'hackathons', '2020-02-25', 'deepak', 'deepak', 'IT', '3', '/uploads/deepak/hackathon.csv', '/uploads/deepak/download.png', 'This is Mumbai hackathon event.', '1', '1'),
 (17, 'Smart India Hackathon', 'competition', '2020-02-20', 'nishant ', 'nishant ', 'Comps', '3', '/uploads/nishant/hackathon.csv', '/uploads/nishant/Smart-India-Hackathon-1.jpg', 'Smart India Hackathon is a national level competition.', '1', '1'),
 (18, 'Science Talk', 'talk', '2020-02-26', 'nishant', 'nishant', 'Comps', '', '', '/uploads/nishant/talk.png', 'This is the science talk. You will have fun here', '0', ''),
-(19, 'sky hackathon', 'hackathons', '2020-02-25', 'deepak', 'deepak', 'IT', '3', '/uploads/deepak/hackathon.csv', '/uploads/deepak/skyhackathon.png', 'event description', '1', '');
+(19, 'sky hackathon', 'hackathons', '2019-02-25', 'deepak', 'deepak', 'IT', '3', '/uploads/deepak/hackathon.csv', '/uploads/deepak/skyhackathon.png', 'event description', '1', '1');
 
 -- --------------------------------------------------------
 
@@ -179,7 +179,40 @@ INSERT INTO `gen_certificates` (`email`, `event_type`, `code`) VALUES
 ('dparadkar99@gmail.com', 'hackathons', 'IQy9Q2b1TBQOgSDLkLWWrymfVLl1IPbM'),
 ('pawanabc59@gmail.com', 'hackathons', 'xiPRVq3Zl4gLDr5yUm7PMLAoZ8hwz0nN'),
 ('akash.hadwale3737@gmail.com', 'hackathons', 'RJdyq44kZFm3aJ3zITbUDQVhTEdN5N0s'),
-('dparadkar99@gmail.com', 'hackathons', 'oykiL4nj3jEv2K3q9uzQ657hgV48HoGV');
+('dparadkar99@gmail.com', 'hackathons', 'oykiL4nj3jEv2K3q9uzQ657hgV48HoGV'),
+('pawanabc59@gmail.com', 'hackathons', 'EvB17SKucXeScYTLnmTjGTpFnyrijkC1'),
+('akash.hadwale3737@gmail.com', 'hackathons', 'LyFiEKfS6OntOCoHjlmSYiCLPrSkZv9i'),
+('dparadkar99@gmail.com', 'hackathons', 'GfciPO6aFSQg7PDuHUm6EocI5s7gLQCr'),
+('pawanabc59@gmail.com', 'hackathons', '3tH1BEVnZWjKJ9ewjy3kJvY2yj2Og4Y3'),
+('akash.hadwale3737@gmail.com', 'hackathons', 'vnC8wqihfG2ezyL8KzXhNWNo2yV4Cp5p'),
+('dparadkar99@gmail.com', 'hackathons', 'vWShputTnMJaD2j2w6WL1bhYvzaklRBJ'),
+('pawanabc59@gmail.com', 'competition', 'Z8OoWAPbVjZXnZyXVb7bI2nYw1ZsydwK'),
+('akash.hadwale3737@gmail.com', 'competition', 'Ty0gxrd9bszyxHnio2FdbBUwLfiIYFnd'),
+('dparadkar99@gmail.com', 'competition', '9rUbeqGWpUk9Rcoznh1xZIabS4nLzOV2'),
+('pawanabc59@gmail.com', 'hackathons', 'QTqRBP4IS8MjN4SCUwPH7xzkgyY9Yh5Y'),
+('akash.hadwale3737@gmail.com', 'hackathons', 'dUbd2TbmbJ5cneWnSTJEU03FsVYBkVn0'),
+('dparadkar99@gmail.com', 'hackathons', 'ztbgEgNJOE9TZTlH8EN3dY8MTgtzJ7Ju'),
+('pawanabc59@gmail.com', 'competition', 'oJdFGTdmg7jvknKORFcz0DP4QbcZW1rg'),
+('akash.hadwale3737@gmail.com', 'competition', 'owQFjoKfE5IGvpeEz3bdULnQulK3XSoK'),
+('dparadkar99@gmail.com', 'competition', 'R4JLL6hpFeNwiI2vMMpVMfTTpNm6x82K'),
+('pawanabc59@gmail.com', 'hackathons', 'WHUSUixmWsAvFvaueUzkz80K4OyctE1s'),
+('akash.hadwale3737@gmail.com', 'hackathons', 'miamnFnckHOc05JgneVWJ962HAQTt1JY'),
+('dparadkar99@gmail.com', 'hackathons', 'u3CXc6z7LcGYXvwTaoesRgijwBJsVI0p'),
+('pawanabc59@gmail.com', 'hackathons', 'WtnFyFP7LV49BOgRVcnX2islQ9J6OTTm'),
+('akash.hadwale3737@gmail.com', 'hackathons', 'Ee8coJ5zsBLk6RbaKVQ8giFc5jWaqaJH'),
+('dparadkar99@gmail.com', 'hackathons', 'GdZqBlG0nGUemU5LpGaZURNwkyLB8gxl'),
+('pawanabc59@gmail.com', 'hackathons', 'osJDcsZWRcar5E88JOtbIouYOVuJ1w8G'),
+('akash.hadwale3737@gmail.com', 'hackathons', '93skvPJdTVPQch901A3QKqyBLthuim4t'),
+('dparadkar99@gmail.com', 'hackathons', 'GPSKjizQPiq1DlOI1ykTSu81VcCFDg2t'),
+('pawanabc59@gmail.com', 'hackathons', 'YIvY89K2GiFAuCXhL6RVBeR70pNdOP4C'),
+('akash.hadwale3737@gmail.com', 'hackathons', 'S2mtMwOidPOg0Yc6D6iYEZwGP4BGodlY'),
+('dparadkar99@gmail.com', 'hackathons', 'L3TICJTgNatGZBCHvvjT7ArVv4MUkLuU'),
+('pawanabc59@gmail.com', 'competition', '0cuInatxI04O6C8xGcbh4VlvGbs2VlcA'),
+('akash.hadwale3737@gmail.com', 'competition', 'RK34beWYStdQpL3yOKmEkGvaR8YWfBUl'),
+('dparadkar99@gmail.com', 'competition', 'EZlvZeH9dXzBcmRhUWzfnx29epmIc0VW'),
+('pawanabc59@gmail.com', 'hackathons', 'bsGRATGDPdykACuPjPrqjJpbUUaNkH6K'),
+('akash.hadwale3737@gmail.com', 'hackathons', 'kCMAH6cQwxUCc526cmd8Q7yey6yRx3oe'),
+('dparadkar99@gmail.com', 'hackathons', 'XVNZ16QLGxxnYjTvZPNyBqxkHX2cIbAk');
 
 -- --------------------------------------------------------
 
@@ -209,6 +242,34 @@ INSERT INTO `login` (`id`, `username`, `password`, `roles`, `department`) VALUES
 (12, 'a', 'a', 'hod', 'IT'),
 (13, 'q', 'q', 'faculty', 'IT');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `participants`
+--
+
+CREATE TABLE `participants` (
+  `id` int(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `event_name` varchar(100) NOT NULL,
+  `event_type` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `participants`
+--
+
+INSERT INTO `participants` (`id`, `email`, `event_name`, `event_type`) VALUES
+(1, 'pawanabc59@gmail.com', 'Mumbai Hackathon', 'hackathons'),
+(2, 'akash.hadwale3737@gmail.com', 'Mumbai Hackathon', 'hackathons'),
+(3, 'dparadkar99@gmail.com', 'Mumbai Hackathon', 'hackathons'),
+(4, 'pawanabc59@gmail.com', 'Smart India Hackathon', 'competition'),
+(5, 'akash.hadwale3737@gmail.com', 'Smart India Hackathon', 'competition'),
+(6, 'dparadkar99@gmail.com', 'Smart India Hackathon', 'competition'),
+(7, 'pawanabc59@gmail.com', 'sky hackathon', 'hackathons'),
+(8, 'akash.hadwale3737@gmail.com', 'sky hackathon', 'hackathons'),
+(9, 'dparadkar99@gmail.com', 'sky hackathon', 'hackathons');
+
 --
 -- Indexes for dumped tables
 --
@@ -232,6 +293,12 @@ ALTER TABLE `login`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `participants`
+--
+ALTER TABLE `participants`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -239,7 +306,7 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `faculty`
@@ -252,6 +319,12 @@ ALTER TABLE `faculty`
 --
 ALTER TABLE `login`
   MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `participants`
+--
+ALTER TABLE `participants`
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -67,6 +67,7 @@
                 <form action="/printCertificates" method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="event_name" value="<%= event_name %>">
+                        <input type="hidden" name="event_type" value="<%= event_type %>">
                         <input type="hidden" name="event_id" value="<%= event_id %>">
                         <input type="hidden" name="csv_path" value="<%= csv_path %>">
                         <input type="hidden" name="certificate_printed" value="<%= certificate_printed %>">
@@ -79,9 +80,9 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="radio">
+                            <!-- <div class="radio">
                                 <label><input type="radio" name="selectedTemplate" value="thirdTemplate"><img src="./images/354.jpg" width="250" height="150"></label>
-                            </div>
+                            </div> -->
                             <div class="radio" style="margin-left: 10vw;">
                                 <label><input type="radio" name="selectedTemplate" value="defaultTemplate"><img src="./images/akki_certi.PNG" width="250" height="150" ml-4></label>
                             </div>
