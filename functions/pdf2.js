@@ -41,7 +41,7 @@ function pdf(event_name,name,rank,email, i){
 // })
 
 var qrcode = "./images/qrcode/"+event_name+"/"+email+".png";
-console.log("email here is : "+email);
+// console.log("email here is : "+email);
    
    // Pipe its output somewhere, like to a file or HTTP response
    // See below for browser usage

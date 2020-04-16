@@ -111,8 +111,8 @@ app.post("/login", (req, res) => {
             req.session.username = username;
             req.session.roles = result.roles;
             req.session.department = result.department;
-            console.log("result : " + result[0]);
-            console.log("role : " + result.roles);
+            // console.log("result : " + result[0]);
+            // console.log("role : " + result.roles);
             res.redirect("/viewEvent");
 
         });
@@ -334,11 +334,12 @@ app.post("/showParticipants", (req, res) => {
             var sql = "INSERT INTO `gen_certificates`(`email`, `event_type`, `code`) VALUES(?,?,?)";
             con.query(sql, [jsonObject[i].Email, event_type, code], function(err, results) {
                 if (err) { throw err; }
-                console.log(results)
+                // console.log(results)
             })
+            // You need to change the ip address so that the QR which is generated will show certificate validity otherwise you have to type the ip address manually in your browser.
             QRCode.toFile("./images/qrcode/" + event_name + "/" + jsonObject[i].Email + ".png", "http://192.168.0.105:5655/verify?code=" + code, {}, function(err) {
                 if (err) throw err
-                console.log('qrcode done');
+                // console.log('qrcode done');
             });
         }
         // if (printCertificates_alert_int == 0) {
@@ -360,7 +361,9 @@ app.post("/printCertificates", (req, res) => {
     var certificate_printed = req.body.certificate_printed;
     var selectedTemplate = req.body.selectedTemplate;
 
-    console.log("file path : " + csv_path);
+    // console.log("file path : " + csv_path);
+    // var d = new Date();
+    // console.log("Start time for printCertificates : "+ d);
 
     var first = "not";
     var second = "not";
@@ -374,17 +377,18 @@ app.post("/printCertificates", (req, res) => {
         // }
 
         // if (second == "done") {
-        //log
 
         for (var i = 0; i < jsonObject.length; i++) {
 
             if (selectedTemplate == "firstTemplate") {
                 pdfObj2.pdf(event_name, jsonObject[i].Name, jsonObject[i].Rank, jsonObject[i].Email, i);
+                // console.log("Print time for "+(i+1)+" certificate is : "+ (new Date()-d)/1000);
                 sendCertificates(event_name, jsonObject[i].Name, jsonObject[i].Email, );
 
             } else if (selectedTemplate == "secondTemplate") {
                 pdfObj3.pdf(event_name, jsonObject[i].Name, jsonObject[i].Rank, jsonObject[i].Email, i);
-                console.log("email for recipent" + jsonObject[i].Email);
+                // console.log("Print time for certificate is : "+ (new Date()-d)/1000);
+                // console.log("email for recipent" + jsonObject[i].Email);
                 sendCertificates(event_name, jsonObject[i].Name, jsonObject[i].Email);
 
             }
@@ -395,6 +399,7 @@ app.post("/printCertificates", (req, res) => {
             // }
             else {
                 pdfObj1.pdf(event_name, jsonObject[i].Name, jsonObject[i].Rank, jsonObject[i].Email, i);
+                // console.log("Print time for certificate is : "+ (new Date()-d)/1000);
                 sendCertificates(event_name, jsonObject[i].Name, jsonObject[i].Email);
             }
 
@@ -424,16 +429,18 @@ app.get("/makeCertificate", (req, res) => {
 
 function sendCertificates(event_name, name, email) {
 
+    // while using your email just allow for the less secure apps from your google settings so that it won't give any error.
+
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'beit062020@gmail.com',
-            pass: 'itbe06@2020'
+            user: 'yourEmail@gmail.com',
+            pass: 'YourEmailPassword'
         }
     });
 
     var mailOptions = {
-        from: 'Admin <beit062020@gmail.com>',
+        from: 'Admin <yourEmail@gmail.com>',
         to: email,
         subject: 'Your certificate for ' + event_name + '.',
         text: 'Hey ' + name + ', Admin here. \n Your certificate is generated and we are sending you this email with your certificate.\nWe hope you liked our event and we will be deligted to see you in the upcoming events. \n\nThanks and Regards,Admin :)',
@@ -547,7 +554,7 @@ app.post("/facultyEvent", (req, res) => {
 
 app.post("/participantsEvent", (req, res) => {
     var participantsEmail = req.body.participantsEmail;
-    var sql = "select event_type,count(id) as count from participants where email = '" + participantsEmail + "' group by event_name,event_type";
+    var sql = "select event_type,count(id) as count from participants where email = '" + participantsEmail + "' group by event_type";
     var sql2 = "select event_incharge from event group by event_incharge";
     var sql3 = "select email from participants group by email";
     con.query(sql3, function(err, results3) {
