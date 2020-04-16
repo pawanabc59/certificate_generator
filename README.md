@@ -1,4 +1,4 @@
-## certificate_generator
+# certificate_generator
 A web platform for college organisations where the event organizer can generate the certificate of the participants.
 
 ## Process
@@ -43,6 +43,23 @@ Project will run on port 5655. Type this in browser
 ```
 $ http://localhost:5655/login
 ```
+
+## Screenshots	
+
+1.
+<img width="1000" height="450" alt="img" src="https://github.com/pawanabc59/certificate_generator/blob/master/screenShots/1.PNG">
+2.
+<img width="1000" height="450" alt="img" src="https://github.com/pawanabc59/certificate_generator/blob/master/screenShots/2.PNG">
+3.
+<img width="1000" height="450" alt="img" src="https://github.com/pawanabc59/certificate_generator/blob/master/screenShots/3.PNG">
+4.
+<img width="1000" height="450" alt="img" src="https://github.com/pawanabc59/certificate_generator/blob/master/screenShots/4.PNG">
+5.
+<img width="1000" height="450" alt="img" src="https://github.com/pawanabc59/certificate_generator/blob/master/screenShots/5.PNG">
+6.
+<img width="1000" height="450" alt="img" src="https://github.com/pawanabc59/certificate_generator/blob/master/screenShots/6.PNG">
+7.
+<img width="1000" height="450" alt="img" src="https://github.com/pawanabc59/certificate_generator/blob/master/screenShots/7.PNG">
 
 ## Technology stack
 1.  Bootstrap
